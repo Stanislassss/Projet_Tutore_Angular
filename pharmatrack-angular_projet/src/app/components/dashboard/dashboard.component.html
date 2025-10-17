@@ -1,0 +1,124 @@
+<mat-toolbar color="primary">
+  <mat-icon>local_pharmacy</mat-icon>
+  <span>PharmaTrack Burkina</span>
+  <span class="spacer"></span>
+  <span class="username">{{ username }}</span>
+  <button mat-icon-button (click)="logout()">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div class="dashboard-container">
+  <div class="navigation-buttons">
+    <button mat-raised-button color="primary" (click)="navigateTo('/medicines')">
+      <mat-icon>medication</mat-icon>
+      Médicaments
+    </button>
+    <button mat-raised-button color="accent" (click)="navigateTo('/sales')">
+      <mat-icon>shopping_cart</mat-icon>
+      Ventes
+    </button>
+  </div>
+
+  <div class="stats-grid">
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon medicines">
+          <mat-icon>medication</mat-icon>
+        </div>
+        <div class="stat-info">
+          <h3>{{ totalMedicines }}</h3>
+          <p>Médicaments</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon sales">
+          <mat-icon>attach_money</mat-icon>
+        </div>
+        <div class="stat-info">
+          <h3>{{ totalSales | number:'1.0-0' }} FCFA</h3>
+          <p>Ventes totales</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card alert" *ngIf="lowStockCount > 0">
+      <mat-card-content>
+        <div class="stat-icon warning">
+          <mat-icon [matBadge]="lowStockCount" matBadgeColor="warn">warning</mat-icon>
+        </div>
+        <div class="stat-info">
+          <h3>{{ lowStockCount }}</h3>
+          <p>Alertes stock</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="alerts-section" *ngIf="lowStockMedicines.length > 0">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon color="warn">warning</mat-icon>
+          Alertes de stock faible
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="alert-list">
+          <div class="alert-item" *ngFor="let medicine of lowStockMedicines">
+            <mat-icon color="warn">error_outline</mat-icon>
+            <span class="medicine-name">{{ medicine.name }}</span>
+            <span class="stock-badge" [class.critical]="medicine.stock < 5">
+              Stock: {{ medicine.stock }}
+            </span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="charts-section">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Top 5 des ventes par médicament</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="chart-container">
+          <canvas baseChart
+            [data]="barChartData"
+            [options]="barChartOptions"
+            type="bar">
+          </canvas>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="recent-sales-section">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Ventes récentes</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="sales-list" *ngIf="recentSales.length > 0; else noSales">
+          <div class="sale-item" *ngFor="let sale of recentSales">
+            <div class="sale-info">
+              <strong>{{ sale.medicineName }}</strong>
+              <small>{{ sale.date | date:'short' }}</small>
+            </div>
+            <div class="sale-details">
+              <span class="quantity">Qté: {{ sale.quantity }}</span>
+              <span class="price">{{ sale.totalPrice }} FCFA</span>
+            </div>
+          </div>
+        </div>
+        <ng-template #noSales>
+          <p class="no-data">Aucune vente enregistrée</p>
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

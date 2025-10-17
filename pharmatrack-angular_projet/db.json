@@ -1,0 +1,57 @@
+{
+  "medicines": [
+    {
+      "name": "Paracétamol 500mg",
+      "category": "Antalgique",
+      "price": 500,
+      "stock": 140,
+      "expiryDate": "2025-10-16",
+      "description": "Médicament contre la douleur et la fièvre",
+      "id": 1
+    },
+    {
+      "name": "Amoxicilline 1g",
+      "category": "Antibiotique",
+      "price": 2500,
+      "stock": 14,
+      "expiryDate": "2025-06-30",
+      "description": "Antibiotique à large spectre",
+      "id": 2
+    },
+    {
+      "id": 3,
+      "name": "Ibuprofène 400mg",
+      "category": "Anti-inflammatoire",
+      "price": 750,
+      "stock": 5,
+      "expiryDate": "2025-09-15",
+      "description": "Anti-inflammatoire non stéroïdien"
+    }
+  ],
+  "sales": [
+    {
+      "id": 1,
+      "medicineId": 1,
+      "medicineName": "Paracétamol 500mg",
+      "quantity": 10,
+      "totalPrice": 5000,
+      "date": "2025-01-10T10:30:00.000Z"
+    },
+    {
+      "id": 2,
+      "medicineId": 2,
+      "medicineName": "Amoxicilline 1g",
+      "quantity": 5,
+      "totalPrice": 12500,
+      "date": "2025-01-11T14:20:00.000Z"
+    },
+    {
+      "medicineId": 1,
+      "medicineName": "Paracétamol 500mg ttttttttttttttttt",
+      "quantity": 10,
+      "totalPrice": 5000,
+      "date": "2025-10-16T21:14:16.287Z",
+      "id": 3
+    }
+  ]
+}

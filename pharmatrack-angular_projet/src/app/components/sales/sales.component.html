@@ -1,0 +1,130 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span>Gestion des Ventes</span>
+  <span class="spacer"></span>
+  <button mat-icon-button (click)="logout()">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div class="sales-container">
+  <div class="sales-grid">
+    <mat-card class="sale-form-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>add_shopping_cart</mat-icon>
+          Nouvelle vente
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="saleForm" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Sélectionner un médicament</mat-label>
+            <mat-select formControlName="medicineId">
+              <mat-option *ngFor="let medicine of medicines" [value]="medicine.id">
+                {{ medicine.name }} (Stock: {{ medicine.stock }})
+              </mat-option>
+            </mat-select>
+            <mat-icon matPrefix>medication</mat-icon>
+            <mat-error *ngIf="saleForm.get('medicineId')?.hasError('required')">
+              Veuillez sélectionner un médicament
+            </mat-error>
+          </mat-form-field>
+
+          <div class="medicine-info" *ngIf="selectedMedicine">
+            <div class="info-row">
+              <span class="label">Prix unitaire:</span>
+              <span class="value">{{ selectedMedicine.price }} FCFA</span>
+            </div>
+            <div class="info-row">
+              <span class="label">Stock disponible:</span>
+              <span class="value" [class.low-stock]="selectedMedicine.stock < 10">
+                {{ selectedMedicine.stock }}
+              </span>
+            </div>
+            <div class="info-row">
+              <span class="label">Catégorie:</span>
+              <span class="value">{{ selectedMedicine.category }}</span>
+            </div>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Quantité</mat-label>
+            <input 
+              matInput 
+              type="number" 
+              formControlName="quantity" 
+              [max]="maxQuantity"
+              min="1">
+            <mat-icon matPrefix>shopping_cart</mat-icon>
+            <mat-error *ngIf="saleForm.get('quantity')?.hasError('required')">
+              La quantité est requise
+            </mat-error>
+            <mat-error *ngIf="saleForm.get('quantity')?.hasError('min')">
+              La quantité doit être au moins 1
+            </mat-error>
+          </mat-form-field>
+
+          <div class="total-section" *ngIf="selectedMedicine">
+            <div class="total-label">Total à payer:</div>
+            <div class="total-amount">{{ totalPrice | number:'1.0-0' }} FCFA</div>
+          </div>
+
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit" 
+            class="full-width"
+            [disabled]="!saleForm.valid">
+            <mat-icon>check_circle</mat-icon>
+            Enregistrer la vente
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="sales-history-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>history</mat-icon>
+          Historique des ventes
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <table mat-table [dataSource]="sales" class="sales-table" *ngIf="sales.length > 0">
+          <ng-container matColumnDef="medicineName">
+            <th mat-header-cell *matHeaderCellDef>Médicament</th>
+            <td mat-cell *matCellDef="let sale">{{ sale.medicineName }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef>Quantité</th>
+            <td mat-cell *matCellDef="let sale">{{ sale.quantity }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="totalPrice">
+            <th mat-header-cell *matHeaderCellDef>Total</th>
+            <td mat-cell *matCellDef="let sale">{{ sale.totalPrice }} FCFA</td>
+          </ng-container>
+
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let sale">{{ sale.date | date:'short' }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <div class="no-data" *ngIf="sales.length === 0">
+          <mat-icon>receipt_long</mat-icon>
+          <p>Aucune vente enregistrée</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

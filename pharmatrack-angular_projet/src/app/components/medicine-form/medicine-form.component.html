@@ -1,0 +1,106 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span>{{ isEditMode ? 'Modifier' : 'Ajouter' }} un médicament</span>
+  <span class="spacer"></span>
+  <button mat-icon-button (click)="logout()">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>{{ isEditMode ? 'edit' : 'add' }}</mat-icon>
+        {{ isEditMode ? 'Modifier le médicament' : 'Nouveau médicament' }}
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="medicineForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nom du médicament</mat-label>
+            <input matInput formControlName="name" placeholder="Ex: Paracétamol 500mg">
+            <mat-icon matPrefix>medication</mat-icon>
+            <mat-error *ngIf="medicineForm.get('name')?.hasError('required')">
+              Le nom est requis
+            </mat-error>
+            <mat-error *ngIf="medicineForm.get('name')?.hasError('minlength')">
+              Le nom doit contenir au moins 3 caractères
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Catégorie</mat-label>
+            <input matInput formControlName="category" placeholder="Ex: Antalgique">
+            <mat-icon matPrefix>category</mat-icon>
+            <mat-error *ngIf="medicineForm.get('category')?.hasError('required')">
+              La catégorie est requise
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row two-columns">
+          <mat-form-field appearance="outline">
+            <mat-label>Prix (FCFA)</mat-label>
+            <input matInput type="number" formControlName="price" placeholder="0">
+            <mat-icon matPrefix>attach_money</mat-icon>
+            <mat-error *ngIf="medicineForm.get('price')?.hasError('required')">
+              Le prix est requis
+            </mat-error>
+            <mat-error *ngIf="medicineForm.get('price')?.hasError('min')">
+              Le prix doit être positif
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Stock</mat-label>
+            <input matInput type="number" formControlName="stock" placeholder="0">
+            <mat-icon matPrefix>inventory</mat-icon>
+            <mat-error *ngIf="medicineForm.get('stock')?.hasError('required')">
+              Le stock est requis
+            </mat-error>
+            <mat-error *ngIf="medicineForm.get('stock')?.hasError('min')">
+              Le stock doit être positif
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Date d'expiration</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="expiryDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="medicineForm.get('expiryDate')?.hasError('required')">
+              La date d'expiration est requise
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description (optionnel)</mat-label>
+            <textarea matInput formControlName="description" rows="3" placeholder="Description du médicament"></textarea>
+            <mat-icon matPrefix>description</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button mat-button type="button" (click)="goBack()">
+            Annuler
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!medicineForm.valid">
+            <mat-icon>save</mat-icon>
+            {{ isEditMode ? 'Mettre à jour' : 'Enregistrer' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

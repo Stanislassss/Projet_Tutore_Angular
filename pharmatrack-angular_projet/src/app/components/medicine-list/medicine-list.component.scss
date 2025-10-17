@@ -1,0 +1,98 @@
+.spacer {
+  flex: 1 1 auto;
+}
+
+.medicine-list-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  
+  h2 {
+    margin: 0;
+    color: #333;
+  }
+  
+  button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.medicine-table {
+  width: 100%;
+  
+  th {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  td {
+    padding: 12px 8px;
+  }
+}
+
+.stock-badge {
+  padding: 4px 12px;
+  background: #4caf50;
+  color: white;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  
+  &.low-stock {
+    background: #ff9800;
+  }
+  
+  &.critical-stock {
+    background: #f44336;
+  }
+}
+
+.no-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #999;
+  
+  mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+  }
+  
+  p {
+    font-size: 18px;
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .medicine-list-container {
+    padding: 16px;
+  }
+  
+  .header-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    
+    button {
+      width: 100%;
+    }
+  }
+  
+  .medicine-table {
+    font-size: 14px;
+  }
+}
